@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "26101207532",
+    "firebase_url": "https://fcmexample-56620.firebaseio.com",
+    "project_id": "fcmexample-56620",
+    "storage_bucket": "fcmexample-56620.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:26101207532:android:d014397d6b55cd11",
+        "android_client_info": {
+          "package_name": "com.luteh.fcmexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "26101207532-dar1a50t9et2as4skfds2a7htv14bs3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.luteh.fcmexample",
+            "certificate_hash": "40b63466949c5ca581155a9d2ed8e4059ca9be41"
+          }
+        },
+        {
+          "client_id": "26101207532-s6o73mghub01psbr2d258dambgdq898i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4KQDl0N8ILOxtoJu9KwuVEEBEdAdq9mQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "26101207532-s6o73mghub01psbr2d258dambgdq898i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
