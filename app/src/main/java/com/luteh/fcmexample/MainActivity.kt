@@ -16,8 +16,8 @@ class MainActivity : AppCompatActivity() {
         val crashButton = Button(this)
         crashButton.text = "Crash!"
         crashButton.setOnClickListener {
-            Crashlytics.log(Log.DEBUG, "tag", "Error crash testing 3")
-//            Crashlytics.logException(Throwable("Error crash testing 2"))
+//            Crashlytics.log(Log.DEBUG, "tag", "Error crash testing 3")
+            Crashlytics.logException(Throwable("Error crash testing 2"))
 //            Crashlytics.getInstance().crash() // Force a crash
 //            Crashlytics.getInstance()
         }
