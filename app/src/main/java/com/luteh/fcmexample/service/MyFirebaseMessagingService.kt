@@ -3,21 +3,15 @@ package com.luteh.fcmexample.service
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
-import com.bumptech.glide.request.Request
-import com.bumptech.glide.request.target.SizeReadyCallback
-import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.luteh.fcmexample.config.Config
-import android.R.attr.bitmap
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.os.Build
-import android.content.Context.NOTIFICATION_SERVICE
-import androidx.core.content.ContextCompat.getSystemService
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -26,16 +20,58 @@ import android.media.RingtoneManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.luteh.fcmexample.GlideApp
 import com.luteh.fcmexample.R
-import java.net.URL
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private val TAG = "MyFirebaseMessagingServ"
+
+    override fun onNewToken(token: String?) {
+        super.onNewToken(token)
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+        sendRegistrationToServer(token)
+    }
+
+    private fun sendRegistrationToServer(token: String?) {
+        Log.d(TAG, "sendRegistrationToServer: $token")
+    }
+
+    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        Log.d(TAG, "onMessageReceived: ${remoteMessage?.notification?.title} ${remoteMessage?.messageId}")
+        super.onMessageReceived(remoteMessage)
+        if (!remoteMessage?.data.isNullOrEmpty())
+            getImage(remoteMessage!!)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getImage(remoteMessage: RemoteMessage) {
+        val data = remoteMessage.data
+        Config.title = data["title"]!!
+        Config.content = data["content"]!!
+        Config.imageUrl = data["imageUrl"]!!
+        Config.gameUrl = data["gameUrl"]!!
+
+        Log.d(TAG, "getImage: ${remoteMessage.messageId}")
+
+        val uiHandler = Handler(Looper.getMainLooper())
+        uiHandler.post {
+            // Get image from data Notification
+            GlideApp.with(this)
+                .load(Config.imageUrl)
+                .into(object : SimpleTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        sendNotification(resource)
+                    }
+
+                })
+        }
+    }
 
     private fun sendNotification(bitmap: Drawable) {
         Log.d(TAG, "sendNotification: ")
@@ -78,36 +114,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
         notificationManager.notify(1, notificationBuilder.build())
-    }
-
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        super.onMessageReceived(remoteMessage)
-
-        if (!remoteMessage?.data.isNullOrEmpty())
-            getImage(remoteMessage!!)
-    }
-
-    @Suppress("DEPRECATION")
-    private fun getImage(remoteMessage: RemoteMessage) {
-        val data = remoteMessage.data
-        Config.title = data["title"]!!
-        Config.content = data["content"]!!
-        Config.imageUrl = data["imageUrl"]!!
-        Config.gameUrl = data["gameUrl"]!!
-
-        Log.d(TAG, "getImage: ${remoteMessage.messageId}")
-
-        val uiHandler = Handler(Looper.getMainLooper())
-        uiHandler.post {
-            // Get image from data Notification
-            GlideApp.with(this)
-                .load(Config.imageUrl)
-                .into(object : SimpleTarget<Drawable>() {
-                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                        sendNotification(resource)
-                    }
-
-                })
-        }
     }
 }

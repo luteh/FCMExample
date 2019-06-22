@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">FCMExample</string>
+
+    <string name="default_notification_channel_id">123454321</string>
+    <string name="msg_token_fmt">Message</string>
 </resources>
